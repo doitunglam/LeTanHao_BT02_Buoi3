@@ -1,0 +1,66 @@
+[
+ {
+  "Id": 1,
+  "Fname": "Zachary",
+  "Lname": "Moore",
+  "Image": "moore.jpg",
+  "Phone": "(273)-352-7112",
+  "Mail": "zachary.moore@example.com"
+ },
+ {
+  "Id": 2,
+  "Fname": "Dominic",
+  "Lname": "Thunes",
+  "Image": "thunes.jpg",
+  "Phone": "(067)-453-1128",
+  "Mail": "dominic.thunes@example.com"
+ },
+ {
+  "Id": 3,
+  "Fname": "Apolline",
+  "Lname": "Renard",
+  "Image": "renard.jpg",
+  "Phone": "(027)--155-0657",
+  "Mail": "apolline.renard@example.com"
+ },
+ {
+  "Id": 4,
+  "Fname": "Maria",
+  "Lname": "Pascual",
+  "Image": "pascual.jpg",
+  "Phone": "(094)-134-9948",
+  "Mail": "maria.pascual@example.com"
+ },
+ {
+  "Id": 5,
+  "Fname": "Djordy",
+  "Lname": "Valkema",
+  "Image": "valkema.jpg",
+  "Phone": "(167)-351-1900",
+  "Mail": "djordy.valkema@example.com"
+ },
+ {
+  "Id": 6,
+  "Fname": "Jenny",
+  "Lname": "Jones",
+  "Image": "jone.jpg",
+  "Phone": "(015)-242-8092",
+  "Mail": "jenny.jones@example.com"
+ },
+ {
+  "Id": 7,
+  "Fname": "Ceylan",
+  "Lname": "Çatalbaş",
+  "Image": "catalbas.jpg",
+  "Phone": "(536)-393-6219",
+  "Mail": "ceylan.catalbas@example.com"
+ },
+ {
+  "Id": 8,
+  "Fname": "Seraina",
+  "Lname": "Henry",
+  "Image": "henry.jpg",
+  "Phone": "(077)-673-2231",
+  "Mail": "seraina.henry@example.com"
+ }
+]
