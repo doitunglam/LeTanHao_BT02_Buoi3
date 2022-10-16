@@ -1,5 +1,7 @@
 package com.example.letanhao_bt02_buoi3;
 
+import androidx.annotation.ContentView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,10 +10,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,12 +39,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity  implements ContactAdapter.Listener{
 
     RecyclerView rvContact;
     Contact[] contacts;
     ContactAdapter contactAdapter;
+    View contactDetailView;
+    static boolean isInDetailView = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -48,6 +74,7 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(s);
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             rvContact = findViewById(R.id.rvContacts);
@@ -65,19 +92,73 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
     }
 
     @Override
-    public void onItemListener(Contact contact) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Contacts");
-        builder.setIcon(getDrawable(contact.getImageID()));
-        builder.setMessage(contact.getFname() +" " + contact.getLname() + "\n" + contact.getPhone());
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+    public void OnItemListener(int pos, Contact contact) {
+        if (isInDetailView) return;
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        contactDetailView = layoutInflater.inflate(R.layout.contact_detail, null);
+        ViewGroup container = findViewById(R.id.contactDetail);
+        container.addView(contactDetailView);
+        TextView txBirthday = findViewById(R.id.cdBirthday);
+        TextView cdName = findViewById(R.id.cdFullName);
+        TextView txMail = findViewById(R.id.cdMmail);
+        TextView txPhone = findViewById(R.id.cdPhone);
+        ImageView userImage = findViewById(R.id.userImage);
+        cdName.setText(contact.getFullName());
+        txBirthday.setText(contact.getBirthday());
+        txMail.setText(contact.getMail());
+        txPhone.setText(contact.getPhone());
+        userImage.setImageResource(contact.getImageID());
+        isInDetailView = true;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_mnu, menu);
+
+        SearchView searchView  = (SearchView) menu.findItem(R.id.mnuSearch).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public boolean onQueryTextSubmit(String query) {
+                contactAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                contactAdapter.getFilter().filter(newText);
+                FloatingActionButton fabAddContact = findViewById(R.id.fabAddContact);
+                if(newText.isEmpty()){
+                    fabAddContact.setVisibility(View.VISIBLE);
+                }else {
+                    fabAddContact.setVisibility(View.INVISIBLE);
+                }
+                return false;
             }
         });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
 
+        return true;
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if(item.getItemId() == R.id.mnuSort){
+//            Collections.sort(Arrays.asList(contacts));
+//            contactAdapter.notifyDataSetChanged();
+//        }
+//        if(item.getItemId() == R.id.mnuSearch){
+//            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+//            startActivity(intent);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
+
+    public void onAddButtonClick(View view) {
+        System.out.println("Add button click");
+    }
+
+    public void onCancelBtnClick(View view) {
+        ((ViewGroup) contactDetailView.getParent()).removeView(contactDetailView);
+        isInDetailView = false;
     }
 }

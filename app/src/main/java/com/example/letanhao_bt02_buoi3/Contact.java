@@ -4,13 +4,36 @@ package com.example.letanhao_bt02_buoi3;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class Contact {
+public class Contact implements Comparable<Contact> {
     int Id;
     String Fname;
     String Lname;
     String Image;
     String Phone;
     String Mail;
+    String Birthday;
+
+    public String getBirthday() {
+        return Birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        Birthday = birthday;
+    }
+    public Contact(){
+        super();
+    }
+    public Contact(int id, String fname, String lname, int image, String phone, String mail, String birthday) {
+        super();
+        Id = id;
+        Fname = fname;
+        Lname = lname;
+        ImageID = image;
+        Phone = phone;
+        Mail = mail;
+        Birthday = birthday;
+    }
+
     int ImageID;
 
     public int getImageID() {
@@ -69,5 +92,15 @@ public class Contact {
     @JsonSetter("Mail")
     public void setMail(String mail) {
         Mail = mail;
+    }
+
+    public String getFullName() {
+        return this.Fname + this.Lname;
+    }
+
+    @Override
+    public int compareTo(Contact o) {
+        if (o == null) return 0;
+        return this.Id - o.getId();
     }
 }

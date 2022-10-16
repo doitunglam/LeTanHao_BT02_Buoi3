@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LeTanHao_BT02_Buoi3</string>
+    <string name="add">add</string>
+    <string name="edit">edit</string>
+    <string name="search">search</string>
+    <string name="addContact">Add %20 Contact</string>
+
 </resources>
