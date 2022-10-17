@@ -3,14 +3,18 @@ package com.example.letanhao_bt02_buoi3;
 import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -41,16 +45,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity  implements ContactAdapter.Listener{
 
     RecyclerView rvContact;
     Contact[] contacts;
+    Contact currentContact;
     ContactAdapter contactAdapter;
     View contactDetailView;
     static boolean isInDetailView = false;
-
+    Menu currentMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -109,35 +115,35 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
         txPhone.setText(contact.getPhone());
         userImage.setImageResource(contact.getImageID());
         isInDetailView = true;
+        currentContact = contact;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_mnu, menu);
-
-        SearchView searchView  = (SearchView) menu.findItem(R.id.mnuSearch).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                contactAdapter.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                contactAdapter.getFilter().filter(newText);
-                FloatingActionButton fabAddContact = findViewById(R.id.fabAddContact);
-                if(newText.isEmpty()){
-                    fabAddContact.setVisibility(View.VISIBLE);
-                }else {
-                    fabAddContact.setVisibility(View.INVISIBLE);
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.main_mnu, menu);
+            this.currentMenu = menu;
+            SearchView searchView = (SearchView) menu.findItem(R.id.mnuSearch).getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    contactAdapter.getFilter().filter(query);
+                    return false;
                 }
-                return false;
-            }
-        });
 
-        return true;
-    }
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    contactAdapter.getFilter().filter(newText);
+                    FloatingActionButton fabAddContact = findViewById(R.id.fabAddContact);
+                    if (newText.isEmpty()) {
+                        fabAddContact.setVisibility(View.VISIBLE);
+                    } else {
+                        fabAddContact.setVisibility(View.INVISIBLE);
+                    }
+                    return false;
+                }
+            });
+            return true;
+        }
 
 //    @Override
 //    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -160,5 +166,12 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
     public void onCancelBtnClick(View view) {
         ((ViewGroup) contactDetailView.getParent()).removeView(contactDetailView);
         isInDetailView = false;
+    }
+
+    public void onEditBtnClick(View view) {
+        Intent it = new Intent(MainActivity.this,AddEditActivity.class);
+        it.putExtra("contact",currentContact);
+        startActivity(it);
+
     }
 }

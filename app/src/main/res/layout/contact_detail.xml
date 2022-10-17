@@ -48,6 +48,7 @@
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="onEditBtnClick"
             android:src="@drawable/ic_baseline_create_24"
             app:tint="@android:color/white" />
 

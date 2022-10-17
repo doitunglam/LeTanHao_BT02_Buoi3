@@ -4,7 +4,9 @@ package com.example.letanhao_bt02_buoi3;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class Contact implements Comparable<Contact> {
+import java.io.Serializable;
+
+public class Contact implements Comparable<Contact>, Serializable {
     int Id;
     String Fname;
     String Lname;

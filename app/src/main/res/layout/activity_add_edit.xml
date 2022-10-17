@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".AddEditActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -16,64 +17,62 @@
         android:layout_marginEnd="16dp"
         android:hint="First name"
 
-        app:startIconDrawable="@drawable/ic_baseline_info_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_baseline_info_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tom"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:text="Tom" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilLname"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:startIconDrawable="@drawable/ic_baseline_info_24"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Last name"
         app:layout_constraintEnd_toEndOf="@+id/tilFname"
         app:layout_constraintStart_toStartOf="@+id/tilFname"
-        app:layout_constraintTop_toBottomOf="@+id/tilFname">
+        app:layout_constraintTop_toBottomOf="@+id/tilFname"
+        app:startIconDrawable="@drawable/ic_baseline_info_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Vu"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:text="Vu" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:startIconDrawable="@drawable/ic_baseline_email_24"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Email"
-
         app:layout_constraintEnd_toEndOf="@+id/tilLname"
+
         app:layout_constraintStart_toStartOf="@+id/tilLname"
-        app:layout_constraintTop_toBottomOf="@+id/tilLname">
+        app:layout_constraintTop_toBottomOf="@+id/tilLname"
+        app:startIconDrawable="@drawable/ic_baseline_email_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:text="vutom@gmail.com"
-            />
+            android:text="vutom@gmail.com" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPhone"
-        app:startIconDrawable="@drawable/ic_baseline_phone_android_24"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -81,37 +80,38 @@
         android:hint="Phone"
         app:layout_constraintEnd_toEndOf="@+id/tilEmail"
         app:layout_constraintStart_toStartOf="@+id/tilEmail"
-        app:layout_constraintTop_toBottomOf="@+id/tilEmail">
+        app:layout_constraintTop_toBottomOf="@+id/tilEmail"
+        app:startIconDrawable="@drawable/ic_baseline_phone_android_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:text="0972277977"/>
+            android:text="0972277977" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilBirthday"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:startIconDrawable="@drawable/ic_baseline_cake_24"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Birthday"
         app:layout_constraintEnd_toEndOf="@+id/tilPhone"
         app:layout_constraintStart_toStartOf="@+id/tilPhone"
         app:layout_constraintTop_toBottomOf="@+id/tilPhone"
-        android:hint="Birthday">
+        app:startIconDrawable="@drawable/ic_baseline_cake_24">
 
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edBirthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="false"
-            android:id="@+id/edBirthday"
-            android:text="01/01/1980"/>
+            android:text="01/01/1980" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
