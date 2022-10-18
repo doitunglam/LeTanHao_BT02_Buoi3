@@ -160,7 +160,9 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
 
 
     public void onAddButtonClick(View view) {
-        System.out.println("Add button click");
+        Intent it = new Intent(MainActivity.this,AddEditActivity.class);
+        it.putExtra("flag",1);
+        startActivityForResult(it,1);
     }
 
     public void onCancelBtnClick(View view) {
@@ -171,7 +173,26 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
     public void onEditBtnClick(View view) {
         Intent it = new Intent(MainActivity.this,AddEditActivity.class);
         it.putExtra("contact",currentContact);
-        startActivity(it);
-
+        it.putExtra("flag",0);
+        startActivityForResult(it,1);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            Contact newContact = (Contact) data.getSerializableExtra("contact");
+            for (int i = 0 ; i <contacts.length; i++)
+            {
+                Contact ct = contacts[i];
+                if (ct.Id == newContact.getId()) {
+                    contacts[i] = newContact;
+                    break;
+                }
+            }
+            contactAdapter = new ContactAdapter(MainActivity.this ,new ArrayList<>(Arrays.asList(contacts)));
+            rvContact.setAdapter(contactAdapter);
+            rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
+            rvContact.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.VERTICAL));
+        }
     }
 }

@@ -85,8 +85,8 @@ public class AddEditActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.mnuSave){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.editSave){
             if(edfName.getText().toString().isEmpty()
                     ||edlName.getText().toString().isEmpty()
                     ||edEmail.getText().toString().isEmpty()
@@ -99,8 +99,10 @@ public class AddEditActivity extends AppCompatActivity {
                 tiBirthday.setError("Not null");
                 return false;
             }else {
+                Contact contact;
+                Intent intent = new Intent();
                 if(flag == 1){
-                    Contact contact = new Contact(new Random().nextInt(9999),
+                    contact = new Contact(new Random().nextInt(9999),
                             edfName.getText().toString(),
                             edlName.getText().toString(),
                             0,
@@ -108,13 +110,10 @@ public class AddEditActivity extends AppCompatActivity {
                             edEmail.getText().toString(),
                             edBirthday.getText().toString());
 
-                    Intent intent = new Intent();
-                    intent.putExtra("contact", (CharSequence) contact);
+                    intent.putExtra("contact", contact);
                     intent.putExtra("flag", 1);
-                    setResult(RESULT_OK, intent);
-                    finish();
                 }else {
-                    Contact contact = new Contact(contactEdit.getId(),
+                    contact = new Contact(contactEdit.getId(),
                             edfName.getText().toString(),
                             edlName.getText().toString(),
                             contactEdit.getImageID(),
@@ -122,12 +121,11 @@ public class AddEditActivity extends AppCompatActivity {
                             edEmail.getText().toString(),
                             edBirthday.getText().toString());
 
-                    Intent intent = new Intent();
-                    intent.putExtra("contact", (CharSequence) contact);
+                    intent.putExtra("contact", contact);
                     intent.putExtra("flag", 2);
-                    setResult(RESULT_OK, intent);
-                    finish();
                 }
+                setResult(RESULT_OK, intent);
+                finish();
             }
         }
         return super.onOptionsItemSelected(item);

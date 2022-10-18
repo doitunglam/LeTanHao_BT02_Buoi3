@@ -4,5 +4,6 @@
     <string name="edit">edit</string>
     <string name="search">search</string>
     <string name="addContact">Add %20 Contact</string>
+    <string name="save">SAVE</string>
 
 </resources>
