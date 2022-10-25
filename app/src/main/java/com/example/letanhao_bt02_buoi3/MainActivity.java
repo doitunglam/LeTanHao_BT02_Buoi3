@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.zip.Inflater;
 
-public class MainActivity extends AppCompatActivity  implements ContactAdapter.Listener{
+public class MainActivity extends AppCompatActivity implements ContactAdapter.Listener {
 
     RecyclerView rvContact;
     Contact[] contacts;
@@ -57,20 +57,20 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
     View contactDetailView;
     static boolean isInDetailView = false;
     Menu currentMenu;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rvContact = findViewById(R.id.rvContacts);
-        StringBuilder stringBuilder= new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         InputStream s = this.getResources().openRawResource(R.raw.bai02_1);
         BufferedReader reader = new BufferedReader(new InputStreamReader(s));
         String string = "";
         while (true) {
             try {
                 if ((string = reader.readLine()) == null) break;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             stringBuilder.append(string).append("\n");
@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             rvContact = findViewById(R.id.rvContacts);
-            contacts = objectMapper.readValue(stringBuilder.toString(), Contact [].class);
-            for (Contact ct:contacts)
-                ct.setImageID(this.getResources().getIdentifier(ct.getImage().substring(0,ct.getImage().length()-4),"drawable",this.getPackageName()));
-            contactAdapter = new ContactAdapter(MainActivity.this ,new ArrayList<>(Arrays.asList(contacts)));
+            contacts = objectMapper.readValue(stringBuilder.toString(), Contact[].class);
+            for (Contact ct : contacts)
+                ct.setImageID(this.getResources().getIdentifier(ct.getImage().substring(0, ct.getImage().length() - 4), "drawable", this.getPackageName()));
+            contactAdapter = new ContactAdapter(MainActivity.this, new ArrayList<>(Arrays.asList(contacts)));
             rvContact.setAdapter(contactAdapter);
-            rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
+            rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
             rvContact.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.VERTICAL));
 
         } catch (IOException e) {
@@ -117,33 +117,34 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
         isInDetailView = true;
         currentContact = contact;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.main_mnu, menu);
-            this.currentMenu = menu;
-            SearchView searchView = (SearchView) menu.findItem(R.id.mnuSearch).getActionView();
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    contactAdapter.getFilter().filter(query);
-                    return false;
-                }
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_mnu, menu);
+        this.currentMenu = menu;
+        SearchView searchView = (SearchView) menu.findItem(R.id.mnuSearch).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                contactAdapter.getFilter().filter(query);
+                return false;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    contactAdapter.getFilter().filter(newText);
-                    FloatingActionButton fabAddContact = findViewById(R.id.fabAddContact);
-                    if (newText.isEmpty()) {
-                        fabAddContact.setVisibility(View.VISIBLE);
-                    } else {
-                        fabAddContact.setVisibility(View.INVISIBLE);
-                    }
-                    return false;
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                contactAdapter.getFilter().filter(newText);
+                FloatingActionButton fabAddContact = findViewById(R.id.fabAddContact);
+                if (newText.isEmpty()) {
+                    fabAddContact.setVisibility(View.VISIBLE);
+                } else {
+                    fabAddContact.setVisibility(View.INVISIBLE);
                 }
-            });
-            return true;
-        }
+                return false;
+            }
+        });
+        return true;
+    }
 
 //    @Override
 //    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -160,9 +161,9 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
 
 
     public void onAddButtonClick(View view) {
-        Intent it = new Intent(MainActivity.this,AddEditActivity.class);
-        it.putExtra("flag",1);
-        startActivityForResult(it,1);
+        Intent it = new Intent(MainActivity.this, AddEditActivity.class);
+        it.putExtra("flag", 0);
+        startActivityForResult(it, 1);
     }
 
     public void onCancelBtnClick(View view) {
@@ -171,28 +172,46 @@ public class MainActivity extends AppCompatActivity  implements ContactAdapter.L
     }
 
     public void onEditBtnClick(View view) {
-        Intent it = new Intent(MainActivity.this,AddEditActivity.class);
-        it.putExtra("contact",currentContact);
-        it.putExtra("flag",0);
-        startActivityForResult(it,1);
+        Intent it = new Intent(MainActivity.this, AddEditActivity.class);
+        it.putExtra("contact", currentContact);
+        it.putExtra("flag", 1);
+        startActivityForResult(it, 1);
     }
+
+    public void onRemoveBtnClick(View view) {
+        ArrayList<Contact> contactList = new ArrayList<>(Arrays.asList(contacts));
+        contactList.remove(currentContact);
+        contactAdapter = new ContactAdapter(MainActivity.this, contactList);
+        rvContact.setAdapter(contactAdapter);
+        rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+        rvContact.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.VERTICAL));
+        contactList.toArray(contacts);
+        contactDetailView.setVisibility(View.INVISIBLE);
+        isInDetailView = false;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+        ArrayList<Contact> contactList = new ArrayList<>(Arrays.asList(contacts));
+        if (data != null) {
             Contact newContact = (Contact) data.getSerializableExtra("contact");
-            for (int i = 0 ; i <contacts.length; i++)
-            {
-                Contact ct = contacts[i];
-                if (ct.Id == newContact.getId()) {
-                    contacts[i] = newContact;
-                    break;
+            int flag = (int) data.getSerializableExtra("flag");
+            if (flag == 1) {
+                for (int i = 0; i < contacts.length; i++) {
+                    Contact ct = contacts[i];
+                    if (ct.Id == newContact.getId()) {
+                        contactList.set(i, newContact);
+                        break;
+                    }
                 }
-            }
-            contactAdapter = new ContactAdapter(MainActivity.this ,new ArrayList<>(Arrays.asList(contacts)));
+            } else
+                contactList.add(newContact);
+            contactAdapter = new ContactAdapter(MainActivity.this, contactList);
             rvContact.setAdapter(contactAdapter);
-            rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));
+            rvContact.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
             rvContact.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.VERTICAL));
         }
+        contactList.toArray(contacts);
     }
 }

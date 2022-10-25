@@ -44,7 +44,7 @@ public class AddEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         flag = intent.getIntExtra("flag", 0);
-        if(flag == 1){
+        if(flag != 1){
             getSupportActionBar().setTitle(R.string.add);
         }else {
             getSupportActionBar().setTitle(R.string.edit);
@@ -102,10 +102,10 @@ public class AddEditActivity extends AppCompatActivity {
                 Contact contact;
                 Intent intent = new Intent();
                 if(flag == 1){
-                    contact = new Contact(new Random().nextInt(9999),
+                    contact = new Contact(contactEdit.getId(),
                             edfName.getText().toString(),
                             edlName.getText().toString(),
-                            0,
+                            contactEdit.getImageID(),
                             edPhone.getText().toString(),
                             edEmail.getText().toString(),
                             edBirthday.getText().toString());
@@ -113,10 +113,10 @@ public class AddEditActivity extends AppCompatActivity {
                     intent.putExtra("contact", contact);
                     intent.putExtra("flag", 1);
                 }else {
-                    contact = new Contact(contactEdit.getId(),
+                    contact = new Contact(new Random().nextInt(9999),
                             edfName.getText().toString(),
                             edlName.getText().toString(),
-                            contactEdit.getImageID(),
+                            0,
                             edPhone.getText().toString(),
                             edEmail.getText().toString(),
                             edBirthday.getText().toString());

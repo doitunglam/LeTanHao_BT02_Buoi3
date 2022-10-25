@@ -57,6 +57,7 @@
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="onRemoveBtnClick"
             android:src="@drawable/ic_baseline_delete_24"
             app:tint="@android:color/white" />
 
